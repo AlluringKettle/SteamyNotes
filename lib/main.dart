@@ -4,12 +4,14 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'auth_service.dart';
 
 import 'home_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  AuthService.init();
   runApp(SteamyNotes());
 }
 
@@ -37,12 +39,9 @@ class NotesWrapper with ChangeNotifier {
   List<String> notes;
 
   NotesWrapper(this.notes) {
-    // CRICITAL BUG ON DEBUG
-    // see https://github.com/FirebaseExtended/flutterfire/issues/4756
     FirebaseAuth.instance.userChanges().listen((User? user) {
       this.user = user;
       notifyListeners();
-      // print("Auth State Changed $user");
       this.loadFromDatabase();
     });
   }

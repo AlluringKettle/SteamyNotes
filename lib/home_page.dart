@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:steamy_notes/auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import 'note_card.dart';
@@ -16,21 +16,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String title = "Notes";
-
-  Future<UserCredential> signInWithGoogle() async {
-    GoogleAuthProvider googleProvider = GoogleAuthProvider();
-
-    // return await FirebaseAuth.instance.signInWithRedirect(googleProvider);
-    return await FirebaseAuth.instance.signInWithPopup(googleProvider);
-  }
-
-  void signIn() {
-    signInWithGoogle();
-  }
-
-  void signOut() {
-    FirebaseAuth.instance.signOut();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,11 +42,11 @@ class _HomePageState extends State<HomePage> {
           user == null
               ? IconButton(
                   icon: Icon(Icons.login),
-                  onPressed: signIn,
+                  onPressed: AuthService.signInWithGoogle,
                 )
               : IconButton(
                   icon: Icon(Icons.logout),
-                  onPressed: signOut,
+                  onPressed: AuthService.signOut,
                 ),
         ],
       ),
