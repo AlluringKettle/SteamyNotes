@@ -4,6 +4,7 @@ android/
 ios/
 test/
 .firebase/
+.vscode/
 
 # Miscellaneous
 *.class
