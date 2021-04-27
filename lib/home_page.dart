@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'note_card.dart';
 import 'main.dart';
@@ -41,10 +42,13 @@ class _HomePageState extends State<HomePage> {
     List<NoteCard> cards = List.generate(100, (index) => NoteCard(index, ""));
 
     return Scaffold(
-      drawer: Drawer(
-        child: Center(child: Text("This is empty")),
-      ),
       appBar: AppBar(
+        leading: IconButton(
+          icon: Image.asset("assets/GitHub-Mark-Light-32px.png"),
+          onPressed: () {
+            launch('https://github.com/AlluringKettle/SteamyNotes');
+          },
+        ),
         title: Text(title),
         centerTitle: true,
         systemOverlayStyle:
