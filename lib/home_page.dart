@@ -29,7 +29,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Image.asset("assets/GitHub-Mark-Light-32px.png"),
+          icon: Image.asset("assets/GitHub-Mark-Light-64px.png"),
+          padding: EdgeInsets.all(11),
           onPressed: () {
             launch('https://github.com/AlluringKettle/SteamyNotes');
           },
