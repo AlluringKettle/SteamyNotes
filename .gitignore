@@ -1,6 +1,5 @@
 # Custom
 web/privateConfig.js
-android/
 ios/
 test/
 .firebase/
