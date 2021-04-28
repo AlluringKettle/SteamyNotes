@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -37,12 +39,13 @@ class SteamyNotes extends StatelessWidget {
 class NotesWrapper with ChangeNotifier {
   User? user;
   List<String> notes;
+  StreamSubscription<DocumentSnapshot>? subscription;
 
   NotesWrapper(this.notes) {
     FirebaseAuth.instance.userChanges().listen((User? user) {
       this.user = user;
       notifyListeners();
-      this.loadFromDatabase();
+      this.subscribeToDatabase();
     });
   }
 
@@ -58,21 +61,36 @@ class NotesWrapper with ChangeNotifier {
   void saveToDatabase() async {
     if (user == null) return;
     var userDoc = FirebaseFirestore.instance.collection("users").doc(user!.uid);
-    // print("DB Saving: $notes");
     await userDoc.set({"notes": notes});
   }
 
   void loadFromDatabase() async {
+    List<String> list = List.filled(100, "");
     if (user != null) {
-      var users = FirebaseFirestore.instance.collection("users");
-      var firestoreData = await users.doc(user!.uid).get();
+      var userDoc =
+          FirebaseFirestore.instance.collection("users").doc(user!.uid);
+      var firestoreData = await userDoc.get();
       List data = firestoreData.data()?["notes"] ?? List<String>.empty();
-      // print("DB Loading: $data");
-      List<String> arr = List.filled(100, "");
-      arr.setRange(0, data.length, data.cast());
-      this.setNotes(arr);
+      list.setRange(0, data.length, data.cast());
+    }
+    this.setNotes(list);
+  }
+
+  void subscribeToDatabase() async {
+    subscription?.cancel();
+    if (user != null) {
+      Stream<DocumentSnapshot> snapshots = FirebaseFirestore.instance
+          .collection("users")
+          .doc(user!.uid)
+          .snapshots();
+      subscription = snapshots.listen((DocumentSnapshot document) {
+        print("onSnapshot");
+        List data = document.data()?["notes"] ?? List<String>.empty();
+        List<String> list = List.filled(100, "");
+        list.setRange(0, data.length, data.cast());
+        this.setNotes(list);
+      });
     } else {
-      // print("Dumb db");
       this.setNotes(List.filled(100, ""));
     }
   }
