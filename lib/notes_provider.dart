@@ -39,8 +39,7 @@ class NotesWrapper with ChangeNotifier {
   void loadFromDatabase() async {
     List<String> list = List.filled(100, "");
     if (user != null) {
-      var userDoc =
-          FirebaseFirestore.instance.collection("users").doc(user!.uid);
+      var userDoc = FirebaseFirestore.instance.collection("users").doc(user!.uid);
       var firestoreData = await userDoc.get();
       List data = firestoreData.data()?["notes"] ?? List<String>.empty();
       list.setRange(0, data.length, data.cast());
@@ -51,10 +50,8 @@ class NotesWrapper with ChangeNotifier {
   void subscribeToDatabase() async {
     subscription?.cancel();
     if (user != null) {
-      Stream<DocumentSnapshot> snapshots = FirebaseFirestore.instance
-          .collection("users")
-          .doc(user!.uid)
-          .snapshots();
+      Stream<DocumentSnapshot> snapshots =
+          FirebaseFirestore.instance.collection("users").doc(user!.uid).snapshots();
       subscription = snapshots.listen((DocumentSnapshot document) {
         print("onSnapshot");
         List data = document.data()?["notes"] ?? List<String>.empty();

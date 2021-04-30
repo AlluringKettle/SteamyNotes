@@ -23,8 +23,7 @@ class _NoteCardState extends State<NoteCard> {
   void storeText() async {
     // SharedPreferences prefs = await SharedPreferences.getInstance();
     // prefs.setString(widget.index.toString(), controller.text);
-    Provider.of<NotesWrapper>(context, listen: false)
-        .updateNote(widget.index, controller.text);
+    Provider.of<NotesWrapper>(context, listen: false).updateNote(widget.index, controller.text);
   }
 
   // void restoreText() async {
@@ -54,8 +53,7 @@ class _NoteCardState extends State<NoteCard> {
 
   @override
   Widget build(BuildContext context) {
-    String newText =
-        Provider.of<NotesWrapper>(context, listen: true).notes[widget.index];
+    String newText = Provider.of<NotesWrapper>(context, listen: true).notes[widget.index];
     if (newText != controller.text) {
       controller.text = newText;
       fontSize = 60 - log(controller.text.length ~/ 7 * 14.4 + 1) * 7;

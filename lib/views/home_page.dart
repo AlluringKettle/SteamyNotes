@@ -37,8 +37,7 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(title),
         centerTitle: true,
-        systemOverlayStyle:
-            SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+        systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
         actions: [
           user == null
               ? IconButton(
