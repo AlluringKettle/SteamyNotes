@@ -9,9 +9,10 @@ import 'package:provider/provider.dart';
 import 'auth_service.dart';
 
 import 'home_page.dart';
+import 'util/stub.dart' if (dart.library.js) 'util/web.dart';
 
 void main() async {
-  js.context.callMethod('restartFirebase', []);
+  restartFirebase();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   AuthService.init();
