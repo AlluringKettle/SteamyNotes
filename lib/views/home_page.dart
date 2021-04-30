@@ -3,11 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:steamy_notes/auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../notes_provider.dart';
+import '../util/auth_service.dart';
 import 'note_card.dart';
-import 'main.dart';
 
 class HomePage extends StatefulWidget {
   @override
