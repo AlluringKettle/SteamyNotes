@@ -15,40 +15,32 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  String title = "Notes";
-
   @override
   Widget build(BuildContext context) {
-    var user = Provider.of<NotesWrapper>(context).user;
-    var title = user?.email ?? user?.uid ?? "Notes";
-    const double maxScreenWidth = 1200;
-    double screenWidth = min(MediaQuery.of(context).size.width, maxScreenWidth);
-    int crossCount = (screenWidth / 300).ceil();
-    List<NoteCard> cards = List.generate(100, (index) => NoteCard(index, ""));
+    const maxScreenWidth = 1200.0;
+    final screenWidth = min(MediaQuery.of(context).size.width, maxScreenWidth);
+    final crossCount = (screenWidth / 300).ceil();
+
+    final user = Provider.of<NotesWrapper>(context).user;
+    final cards = List.generate(100, (index) => NoteCard(index, ""));
+
+    final title = Text(user?.email ?? user?.uid ?? "Notes");
+    final leadingButton = IconButton(
+      icon: Image.asset("assets/GitHub-Mark-Light-64px.png"),
+      padding: EdgeInsets.all(11),
+      onPressed: () => launch('https://github.com/AlluringKettle/SteamyNotes'),
+    );
+    final authButton = user == null
+        ? IconButton(icon: Icon(Icons.login), onPressed: AuthService.signInWithGoogle)
+        : IconButton(icon: Icon(Icons.logout), onPressed: AuthService.signOut);
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Image.asset("assets/GitHub-Mark-Light-64px.png"),
-          padding: EdgeInsets.all(11),
-          onPressed: () {
-            launch('https://github.com/AlluringKettle/SteamyNotes');
-          },
-        ),
-        title: Text(title),
+        title: title,
+        leading: leadingButton,
+        actions: [authButton],
         centerTitle: true,
         systemOverlayStyle: SystemUiOverlayStyle(statusBarColor: Colors.transparent),
-        actions: [
-          user == null
-              ? IconButton(
-                  icon: Icon(Icons.login),
-                  onPressed: AuthService.signInWithGoogle,
-                )
-              : IconButton(
-                  icon: Icon(Icons.logout),
-                  onPressed: AuthService.signOut,
-                ),
-        ],
       ),
       body: Center(
         child: ConstrainedBox(
