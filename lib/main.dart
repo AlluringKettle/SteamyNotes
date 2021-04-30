@@ -43,12 +43,16 @@ class NotesWrapper with ChangeNotifier {
   List<String> notes;
   StreamSubscription<DocumentSnapshot>? subscription;
 
-  NotesWrapper(this.notes) {
-    FirebaseAuth.instance.userChanges().listen((User? user) {
+  void setUser(User? user) {
+    if (this.user != user) {
       this.user = user;
       notifyListeners();
       this.subscribeToDatabase();
-    });
+    }
+  }
+
+  NotesWrapper(this.notes) {
+    FirebaseAuth.instance.authStateChanges().listen(setUser);
   }
 
   void setNotes(notes) {
