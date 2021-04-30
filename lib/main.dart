@@ -11,6 +11,7 @@ import 'auth_service.dart';
 import 'home_page.dart';
 
 void main() async {
+  js.context.callMethod('restartFirebase', []);
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   AuthService.init();

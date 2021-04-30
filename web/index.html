@@ -52,6 +52,10 @@
   <script src="privateConfig.js"></script>
   <script>
     firebase.initializeApp(firebaseConfig);
+    function restartFirebase(){
+      firebase.firestore().terminate();
+      firebase.firestore();
+    };
   </script>
   <script src="main.dart.js" type="application/javascript"></script>
   
