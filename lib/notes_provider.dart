@@ -32,18 +32,18 @@ class NotesWrapper with ChangeNotifier {
   }
 
   void saveToDatabase() async {
-    final userDoc = FirebaseFirestore.instance.collection("users").doc(user?.uid ?? "0");
-    await userDoc.set({"notes": notes});
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(user?.uid ?? '0');
+    await userDoc.set({'notes': notes});
   }
 
   void subscribeToDatabase() async {
     subscription?.cancel();
-    final userDoc = FirebaseFirestore.instance.collection("users").doc(user?.uid ?? "0");
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(user?.uid ?? '0');
     subscription = userDoc.snapshots().listen(
       (DocumentSnapshot document) {
-        print("onSnapshot");
-        List data = document.data()?["notes"] ?? List<String>.empty();
-        List<String> list = List.filled(100, "");
+        print('onSnapshot');
+        List data = document.get('notes') ?? List.empty();
+        List<String> list = List.filled(100, '');
         list.setRange(0, data.length, data.cast());
         this.setNotes(list);
       },

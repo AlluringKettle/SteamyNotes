@@ -18,7 +18,7 @@ class SteamyNotes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider<NotesWrapper>(
-      create: (context) => NotesWrapper(List.filled(100, "")),
+      create: (context) => NotesWrapper(List.filled(100, '')),
       child: MaterialApp(
         title: 'Steamy Notes',
         theme: ThemeData(

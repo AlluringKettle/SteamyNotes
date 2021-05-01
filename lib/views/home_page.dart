@@ -22,11 +22,11 @@ class _HomePageState extends State<HomePage> {
     final crossCount = (screenWidth / 300).ceil();
 
     final user = Provider.of<NotesWrapper>(context).user;
-    final cards = List.generate(100, (index) => NoteCard(index, ""));
+    final cards = List.generate(100, (index) => NoteCard(index, ''));
 
-    final title = Text(user?.email ?? user?.uid ?? "Notes");
+    final title = Text(user?.email ?? user?.uid ?? 'Notes');
     final leadingButton = IconButton(
-      icon: Image.asset("assets/GitHub-Mark-Light-64px.png"),
+      icon: Image.asset('assets/GitHub-Mark-Light-64px.png'),
       padding: EdgeInsets.all(11),
       onPressed: () => launch('https://github.com/AlluringKettle/SteamyNotes'),
     );
