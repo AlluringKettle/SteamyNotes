@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
     final screenWidth = min(MediaQuery.of(context).size.width, maxScreenWidth);
     final crossCount = (screenWidth / 300).ceil();
 
-    final user = Provider.of<NotesWrapper>(context).user;
+    final user = Provider.of<NoteNotifier>(context).user;
     final cards = List.generate(100, (index) => NoteCard(index, ''));
 
     final title = Text(user?.email ?? user?.uid ?? 'Notes');

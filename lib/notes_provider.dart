@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class NotesWrapper with ChangeNotifier {
+class NoteNotifier with ChangeNotifier {
   User? user;
   List<String> notes;
   StreamSubscription<DocumentSnapshot>? subscription;
@@ -17,7 +17,7 @@ class NotesWrapper with ChangeNotifier {
     }
   }
 
-  NotesWrapper(this.notes) {
+  NoteNotifier(this.notes) {
     FirebaseAuth.instance.authStateChanges().listen(setUser);
     subscribeToDatabase();
   }
