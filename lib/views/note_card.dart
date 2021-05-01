@@ -7,9 +7,7 @@ import '../notes_provider.dart';
 
 class NoteCard extends StatefulWidget {
   final int index;
-  final String initialText;
-
-  NoteCard(this.index, this.initialText);
+  const NoteCard(this.index);
 
   @override
   _NoteCardState createState() => _NoteCardState();
@@ -20,40 +18,30 @@ class _NoteCardState extends State<NoteCard> {
   final controller = TextEditingController();
   final focusNode = FocusNode();
 
-  void storeText() async {
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // prefs.setString(widget.index.toString(), controller.text);
-    Provider.of<NoteNotifier>(context, listen: false).updateNote(widget.index, controller.text);
-  }
-
-  // void restoreText() async {
-  // SharedPreferences prefs = await SharedPreferences.getInstance();
-  // setState(() {
-  //   controller.text =
-  //       prefs.getString(widget.index.toString()) ?? widget.initialText;
-  // });
-  // }
-
-  void onTextChanged(String text) {
-    setState(() {
-      fontSize = 60 - log(text.length ~/ 7 * 14.4 + 1) * 7;
-    });
-    storeText();
-  }
-
   @override
   void initState() {
     super.initState();
     focusNode.addListener(() {
       if (!focusNode.hasFocus) {
-        Provider.of<NoteNotifier>(context, listen: false).saveToDatabase();
+        Provider.of<NoteNotifier>(context, listen: false).pushToDatabase();
       }
     });
   }
 
+  void onTextChanged(String text) {
+    setState(() {
+      fontSize = 60 - log(text.length ~/ 7 * 14.4 + 1) * 7;
+    });
+    storeNote();
+  }
+
+  void storeNote() {
+    Provider.of<NoteNotifier>(context, listen: false).storeNote(widget.index, controller.text);
+  }
+
   @override
   Widget build(BuildContext context) {
-    String newText = Provider.of<NoteNotifier>(context, listen: true).notes[widget.index];
+    final newText = Provider.of<NoteNotifier>(context, listen: true).notes[widget.index];
     if (newText != controller.text) {
       controller.text = newText;
       fontSize = 60 - log(controller.text.length ~/ 7 * 14.4 + 1) * 7;

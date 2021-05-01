@@ -9,43 +9,42 @@ class NoteNotifier with ChangeNotifier {
   List<String> notes;
   StreamSubscription<DocumentSnapshot>? subscription;
 
-  void setUser(User? user) {
+  void updateUser(User? user) {
     if (this.user != user) {
       this.user = user;
       notifyListeners();
-      this.subscribeToDatabase();
+      subscribeToDatabase();
     }
   }
 
   NoteNotifier(this.notes) {
-    FirebaseAuth.instance.authStateChanges().listen(setUser);
+    FirebaseAuth.instance.authStateChanges().listen(updateUser);
     subscribeToDatabase();
   }
 
-  void setNotes(notes) {
+  void updateNotes(List<String> notes) {
     this.notes = notes;
     notifyListeners();
   }
 
-  void updateNote(int index, String text) {
+  void storeNote(int index, String text) {
     notes[index] = text;
   }
 
-  void saveToDatabase() async {
+  void pushToDatabase() async {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(user?.uid ?? '0');
     await userDoc.set({'notes': notes});
   }
 
-  void subscribeToDatabase() async {
-    subscription?.cancel();
+  void subscribeToDatabase() {
     final userDoc = FirebaseFirestore.instance.collection('users').doc(user?.uid ?? '0');
+    subscription?.cancel();
     subscription = userDoc.snapshots().listen(
       (DocumentSnapshot document) {
-        print('onSnapshot');
         List data = document.get('notes') ?? List.empty();
         List<String> list = List.filled(100, '');
         list.setRange(0, data.length, data.cast());
-        this.setNotes(list);
+        this.updateNotes(list);
       },
     );
   }
